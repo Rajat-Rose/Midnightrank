@@ -32,7 +32,7 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
             updatePlayerPermissions(p);
         }
 
-        getLogger().info("MidnightRanks (/rank introduce & Dynamic Inheritance) Loaded!");
+        getLogger().info("MidnightRanks (/rank introduce & OP Sync) Loaded!");
     }
 
     @Override
@@ -61,9 +61,6 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
     }
 
     public String getPlayerRank(Player player) {
-        if (player.isOp() && !getConfig().contains("players." + player.getUniqueId().toString())) {
-            return "FOUNDER";
-        }
         return getConfig().getString("players." + player.getUniqueId().toString(), "MEMBER").toUpperCase();
     }
 
@@ -78,7 +75,7 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
     }
 
     public double getSenderTier(CommandSender sender) {
-        if (!(sender instanceof Player)) return 999.0; // Console = Full authority
+        if (!(sender instanceof Player)) return 999.0;
         return getRankTier(getPlayerRank((Player) sender));
     }
 
@@ -94,16 +91,29 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
         String currentRank = getPlayerRank(player);
         double currentTier = getRankTier(currentRank);
 
+        boolean hasStarPerm = false;
+
         if (getConfig().contains("ranks")) {
             for (String rName : getConfig().getConfigurationSection("ranks").getKeys(false)) {
                 double rTier = getRankTier(rName);
                 if (rTier <= currentTier) {
                     List<String> perms = getConfig().getStringList("ranks." + rName + ".permissions");
                     for (String perm : perms) {
-                        attachment.setPermission(perm, true);
+                        if (perm.equals("*")) {
+                            hasStarPerm = true;
+                        } else {
+                            attachment.setPermission(perm, true);
+                        }
                     }
                 }
             }
+        }
+
+        // FOUNDER/Tier 60+ ya '*' perm wale players ko OP sync karega taaki Vanilla F3+F switcher chal sake
+        if (hasStarPerm || currentTier >= 60.0) {
+            if (!player.isOp()) player.setOp(true);
+        } else {
+            if (player.isOp()) player.setOp(false);
         }
     }
 
@@ -134,7 +144,6 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         double senderTier = getSenderTier(sender);
 
-        // MAIN RANK COMMAND (/rank ...)
         if (command.getName().equalsIgnoreCase("rank")) {
             if (args.length == 0) {
                 sender.sendMessage("§e--- MidnightRanks Commands ---");
@@ -147,9 +156,9 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
 
             String sub = args[0].toLowerCase();
 
-            // 1. /rank introduce <name> <tier> <prefix> (या /rank create)
+            // 1. /rank introduce <name> <tier> <prefix>
             if (sub.equals("introduce") || sub.equals("create")) {
-                if (senderTier < 60.0) { // Tier 60 = FOUNDER
+                if (senderTier < 60.0) {
                     sender.sendMessage("§cSirf FOUNDER tier (Tier 60+) hi naya rank introduce kar sakta hai!");
                     return true;
                 }
@@ -164,7 +173,7 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
                 try {
                     tier = Double.parseDouble(args[2]);
                 } catch (NumberFormatException e) {
-                    sender.sendMessage("§cTier number hona chahiye! (e.g. 5 ya 15.5)");
+                    sender.sendMessage("§cTier number hona chahiye!");
                     return true;
                 }
 
@@ -188,7 +197,7 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
 
             // 2. /rank give <player> <rank>
             if (sub.equals("give")) {
-                if (senderTier < 30.0) { // Tier 30 = ADMIN
+                if (senderTier < 30.0) {
                     sender.sendMessage("§cAapke paas rank set karne ki permission nahi hai!");
                     return true;
                 }
@@ -211,7 +220,7 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
 
                 double targetTier = getRankTier(targetRank);
                 if (sender instanceof Player && targetTier >= senderTier) {
-                    sender.sendMessage("§cAap sirf apne se kam tier (lower rank) assign kar sakte hain!");
+                    sender.sendMessage("§cAap sirf apne se kam tier assign kar sakte hain!");
                     return true;
                 }
 
@@ -269,7 +278,6 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
             }
         }
 
-        // SHORTCUT COMMAND: /setrank <player> <rank>
         if (command.getName().equalsIgnoreCase("setrank")) {
             if (args.length < 2) {
                 sender.sendMessage("§cUsage: /setrank <player> <rank>");
@@ -278,9 +286,8 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
             return onCommand(sender, getCommand("rank"), label, new String[]{"give", args[0], args[1]});
         }
 
-        // STAFF CHAT COMMAND (/sc <message>)
         if (command.getName().equalsIgnoreCase("sc")) {
-            if (senderTier < 10.0) { // Tier 10 = HELPER
+            if (senderTier < 10.0) {
                 sender.sendMessage("§cAapke paas staff chat ki permission nahi hai!");
                 return true;
             }
