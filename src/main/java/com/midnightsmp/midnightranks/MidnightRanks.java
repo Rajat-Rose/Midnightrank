@@ -32,7 +32,7 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
             updatePlayerPermissions(p);
         }
 
-        getLogger().info("MidnightRanks (/rank introduce & OP Sync) Loaded!");
+        getLogger().info("MidnightRanks (Tablist Fix & OP Sync) Loaded!");
     }
 
     @Override
@@ -115,6 +115,10 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
         } else {
             if (player.isOp()) player.setOp(false);
         }
+
+        // Tablist Name Prefix Fix
+        String prefix = getRankPrefix(currentRank);
+        player.setPlayerListName(prefix + " §f" + player.getName());
     }
 
     @EventHandler
