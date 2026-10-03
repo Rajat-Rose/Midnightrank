@@ -1,0 +1,15 @@
+name: MidnightRanks
+version: 1.0
+main: com.midnightsmp.midnightranks.MidnightRanks
+api-version: '1.21'
+
+commands:
+  rank:
+    description: Main rank management command (introduce, give, addperm, list).
+    usage: /rank <introduce|give|addperm|list>
+  setrank:
+    description: Shortcut command to assign ranks.
+    usage: /setrank <player> <rank>
+  sc:
+    description: Staff chat command.
+    usage: /sc <message>
