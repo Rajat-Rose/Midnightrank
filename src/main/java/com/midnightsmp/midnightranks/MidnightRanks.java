@@ -32,7 +32,7 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
             updatePlayerPermissions(p);
         }
 
-        getLogger().info("MidnightRanks (Tablist Fix & OP Sync) Loaded!");
+        getLogger().info("MidnightRanks (Join/Quit Prefix Fix) Loaded!");
     }
 
     @Override
@@ -109,28 +109,42 @@ public class MidnightRanks extends JavaPlugin implements Listener, CommandExecut
             }
         }
 
-        // FOUNDER/Tier 60+ ya '*' perm wale players ko OP sync karega taaki Vanilla F3+F switcher chal sake
+        // OP Status Sync
         if (hasStarPerm || currentTier >= 60.0) {
             if (!player.isOp()) player.setOp(true);
         } else {
             if (player.isOp()) player.setOp(false);
         }
 
-        // Tablist Name Prefix Fix
+        // Tablist Name Prefix Update
         String prefix = getRankPrefix(currentRank);
         player.setPlayerListName(prefix + " §f" + player.getName());
     }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        updatePlayerPermissions(event.getPlayer());
+        Player player = event.getPlayer();
+        updatePlayerPermissions(player);
+
+        String rank = getPlayerRank(player);
+        String prefix = getRankPrefix(rank);
+        
+        // Custom Join Message with Rank Prefix
+        event.setJoinMessage(prefix + " §f" + player.getName() + " §ejoined the game");
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        UUID uuid = event.getPlayer().getUniqueId();
+        Player player = event.getPlayer();
+        String rank = getPlayerRank(player);
+        String prefix = getRankPrefix(rank);
+
+        // Custom Quit Message with Rank Prefix
+        event.setQuitMessage(prefix + " §f" + player.getName() + " §eleft the game");
+
+        UUID uuid = player.getUniqueId();
         if (attachments.containsKey(uuid)) {
-            event.getPlayer().removeAttachment(attachments.get(uuid));
+            player.removeAttachment(attachments.get(uuid));
             attachments.remove(uuid);
         }
     }
