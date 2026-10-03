@@ -1,0 +1,37 @@
+ranks:
+  FOUNDER:
+    tier: 60.0
+    prefix: "&4&l[FOUNDER]"
+    permissions:
+      - "*"
+  OWNER:
+    tier: 50.0
+    prefix: "&4[OWNER]"
+    permissions:
+      - "staff.chat"
+  DC_OWNER:
+    tier: 40.0
+    prefix: "&9[DC OWNER]"
+    permissions:
+      - "staff.chat"
+  ADMIN:
+    tier: 30.0
+    prefix: "&c[ADMIN]"
+    permissions:
+      - "staff.chat"
+  MOD:
+    tier: 20.0
+    prefix: "&2[MOD]"
+    permissions:
+      - "staff.chat"
+  HELPER:
+    tier: 10.0
+    prefix: "&b[HELPER]"
+    permissions:
+      - "staff.chat"
+  MEMBER:
+    tier: 0.0
+    prefix: "&7[MEMBER]"
+    permissions: []
+
+players: {}
