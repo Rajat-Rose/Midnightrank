@@ -1,15 +1,41 @@
 name: MidnightRanks
-version: 1.0
+version: 1.3
 main: com.midnightsmp.midnightranks.MidnightRanks
 api-version: '1.21'
-
 commands:
   rank:
-    description: Main rank management command (introduce, give, addperm, list).
-    usage: /rank <introduce|give|addperm|list>
+    description: Main rank command
   setrank:
-    description: Shortcut command to assign ranks.
-    usage: /setrank <player> <rank>
+    description: Set player rank
   sc:
-    description: Staff chat command.
-    usage: /sc <message>
+    description: Staff chat
+  vanish:
+    description: Toggle vanish mode for staff
+    aliases: [v]
+  staff:
+    description: Staff moderation command suite
+  timeout:
+    description: Timeout player chat for specified minutes
+  ban:
+    description: Ban a player from the server
+  unban:
+    description: Unban a player
+  kick:
+    description: Kick a player from the server
+  mute:
+    description: Mute or unmute a player
+  warn:
+    description: Warn a player
+  tp:
+    description: Teleport to a player
+  gm:
+    description: Gamemode switcher
+    aliases: [gamemode]
+  fly:
+    description: Toggle flight mode
+  invsee:
+    description: View player inventory
+  god:
+    description: Toggle god mode
+  heal:
+    description: Heal player health and food
