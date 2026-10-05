@@ -1,37 +1,34 @@
+# Default Ranks Configuration & Tier Heights
 ranks:
-  FOUNDER:
-    tier: 60.0
-    prefix: "&4&l[FOUNDER]"
-    permissions:
-      - "*"
-  OWNER:
-    tier: 50.0
-    prefix: "&4[OWNER]"
-    permissions:
-      - "staff.chat"
-  DC_OWNER:
-    tier: 40.0
-    prefix: "&9[DC OWNER]"
-    permissions:
-      - "staff.chat"
-  ADMIN:
-    tier: 30.0
-    prefix: "&c[ADMIN]"
-    permissions:
-      - "staff.chat"
-  MOD:
-    tier: 20.0
-    prefix: "&2[MOD]"
-    permissions:
-      - "staff.chat"
-  HELPER:
-    tier: 10.0
-    prefix: "&b[HELPER]"
-    permissions:
-      - "staff.chat"
   MEMBER:
     tier: 0.0
     prefix: "&7[MEMBER]"
     permissions: []
+  HELPER:
+    tier: 20.0
+    prefix: "&a[HELPER]"
+    permissions:
+      - "staff.chat"
+  MOD:
+    tier: 40.0
+    prefix: "&b[MOD]"
+    permissions:
+      - "staff.chat"
+  ADMIN:
+    tier: 60.0
+    prefix: "&c[ADMIN]"
+    permissions:
+      - "*"
+  OWNER:
+    tier: 80.0
+    prefix: "&4&l[OWNER]"
+    permissions:
+      - "*"
+  FOUNDER:
+    tier: 100.0
+    prefix: "&d&l[FOUNDER]"
+    permissions:
+      - "*"
 
+# Player Data Storage (Auto-managed by plugin)
 players: {}
